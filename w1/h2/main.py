@@ -23,9 +23,10 @@ class Hash:
         digest.update(data)
         return digest.finalize().hex()
 
-    def debug(self, data: AnyStr) -> NoReturn:
+    def debug(self, data: AnyStr) -> bool:
         print(self)
         print('Hashed:', f"{self.__call__(data)}")
+        return True
 
 
 class Symmetric:
@@ -70,7 +71,7 @@ class Symmetric:
         except UnicodeDecodeError:
             return decrypted
 
-    def debug(self, data: AnyStr) -> NoReturn:
+    def debug(self, data: AnyStr) -> bool:
         print(self)
         print('Key:', self.key.hex())
         encrypted = self.encrypt(data)
@@ -79,6 +80,7 @@ class Symmetric:
         print('Decrypted:', decrypted)
         ok = data == decrypted
         print('OK:', ok)
+        return ok
 
 
 class ECDSASignature:
@@ -113,7 +115,7 @@ class ECDSASignature:
         except (exceptions.InvalidSignature, exceptions.UnsupportedAlgorithm, ValueError):
             return False
 
-    def debug(self, data: AnyStr) -> NoReturn:
+    def debug(self, data: AnyStr) -> bool:
         print(self)
         print('Private key:', self.private_key.private_numbers().private_value)
         print('Public key:', self.public_key.public_numbers().x, '(x),', self.public_key.public_numbers().y, '(y)')
@@ -121,6 +123,7 @@ class ECDSASignature:
         print('Signature:', signature)
         ok = self.verify(data, signature)
         print('OK:', ok)
+        return ok
 
 
 if __name__ == '__main__':
