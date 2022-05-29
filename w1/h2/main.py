@@ -122,6 +122,7 @@ class ECDSASignature:
         signature = self.sign(data)
         print('Signature:', signature)
         ok = self.verify(data, signature)
+        print('Verification:', 'valid' if ok else 'invalid')
         print('OK:', ok)
         return ok
 
